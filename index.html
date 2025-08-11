@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -1972,14 +1972,7 @@ button:hover {
     </a>
   </li>
 
-  <li>
-    <a class="menu-box" href="#" onclick="openMessagesPage()" style="position:relative;">
-      <img src="https://i.imgur.com/XBAeDCN.jpeg" alt="Messages">
-      <span>Messages</span>
-      <span id="messagesUnreadBadge" style="display:none; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:11px; position:absolute; top:0; right:0;"></span>
-    </a>
-  </li>
-
+ 
   <!-- Main Features -->
   <li><a class="menu-box" href="#" onclick="showPage('bomJobs')">
     <img src="https://i.imgur.com/8KM6Rib.jpeg" alt="Jobs">
@@ -2011,11 +2004,14 @@ button:hover {
     <span>Resources</span></a>
   </li>
 
-<!-- Button to trigger Sent Chats -->
-<button onclick="openSentChatsSection()" class="button" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-    View Sent Chats
-</button>
-
+<li>
+  <a class="menu-box" href="#" onclick="openSentChatsSection()" style="position:relative;">
+    <img src="https://i.imgur.com/XBAeDCN.jpeg" alt="Sent Chats">
+    <span>Sent Chats</span>
+    <!-- Optional: Unread badge for Sent Chats -->
+    <span id="sentChatsUnreadBadge" style="display:none; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:11px; position:absolute; top:0; right:0;"></span>
+  </a>
+</li>
 
   <li><a class="menu-box" href="#" onclick="showPage('trendingSection'); loadTrendingItems();">
     <img src="https://i.imgur.com/SjtDlJi.jpeg" alt="Trending">
@@ -2138,14 +2134,13 @@ button:hover {
 
 
 
-
-<!-- Sent Chats Section -->
-<section id="sentChatsSection" style="display:none; padding: 20px;">
-  <h2>Sent Chats</h2>
-  <div id="sentChatsList" style="display: flex; flex-direction: column; gap: 10px;">
-    <!-- Sent chats will be dynamically inserted here -->
+<section id="sentChatsSection" style="display: none;">
+  <div id="sentChatsLoading" style="display: none;">
+    <p>Loading chats... Please wait <img src="spinner.gif" alt="Loading" /></p>
   </div>
+  <div id="sentChatsList"></div>
 </section>
+
 
 
 
@@ -8046,16 +8041,30 @@ function showChatAlert(text, color) {
   setTimeout(() => alertBox.style.display = "none", 2000);
 }
 
-// ✅ Sent Chats Section
+// Function to open the Sent Chats section
 async function openSentChatsSection() {
+  console.log("Opening Sent Chats Section...");
+
   // Hide other sections
   const pages = document.querySelectorAll("section");
   pages.forEach(page => page.style.display = "none");
-  document.getElementById("sentChatsSection").style.display = "block";  // Show Sent Chats Section
 
-  // Load sent chats
+  // Show the Sent Chats Section
+  const sentChatsSection = document.getElementById("sentChatsSection");
+  if (sentChatsSection) {
+    sentChatsSection.style.display = "block";  // Show Sent Chats Section
+  } else {
+    console.error("Sent Chats Section not found");
+    return;
+  }
+
+  // Show loading spinner while waiting for chats
+  document.getElementById("sentChatsLoading").style.display = "block";
+
+  // Try to load sent chats
   await loadSentChats();
 }
+
 
 // Function to load and display sent chats
 async function loadSentChats() {
@@ -8066,7 +8075,11 @@ async function loadSentChats() {
   }
 
   const chatsList = document.getElementById("sentChatsList");
-  chatsList.innerHTML = ''; // Clear the previous chat list
+  const loadingSpinner = document.getElementById("sentChatsLoading");
+
+  // Clear previous chat list and show loading spinner
+  chatsList.innerHTML = '';
+  loadingSpinner.style.display = "block"; // Show the loading spinner
 
   try {
     // Query Firestore for chats where the current user is either the sender or receiver
@@ -8077,6 +8090,7 @@ async function loadSentChats() {
 
     if (snapshot.empty) {
       chatsList.innerHTML = "<p>No chats found.</p>";
+      loadingSpinner.style.display = "none";  // Hide the loading spinner
       return; // No sent chats
     }
 
@@ -8106,8 +8120,12 @@ async function loadSentChats() {
     });
   } catch (error) {
     console.error("Error loading sent chats:", error);
+    chatsList.innerHTML = "<p>Error loading chats. Please try again later.</p>";
+  } finally {
+    loadingSpinner.style.display = "none";  // Hide the loading spinner once done
   }
 }
+
 // ✅ Add message to UI (Messenger style: username + full date-time)
 function addMessageToUI(msgData, isTemporary = false) {
   const messagesContainer = document.getElementById("marketChatMessages");
