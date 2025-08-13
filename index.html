@@ -1879,13 +1879,50 @@ button:hover {
   font-weight: bold;
   margin-bottom: 10px;
 }
+   /* Modal background */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #aaa;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 
 </style>
 
 
 </head>
 <body>
-<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-image: url('https://i.imgur.com/cm7xKDS.jpeg'); background-size: cover; background-position: center;">
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-image: url('https://i.imgur.com/6kuZECC.jpeg'); background-size: cover; background-position: center;">
 
   <!-- Left Image -->
   <img src="https://i.imgur.com/pdTgJX3.jpeg" alt="Left Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
@@ -1922,7 +1959,7 @@ button:hover {
   </div>
 </div>
 <div id="loggedInUser" style="position:absolute; top:15px; right:20px; color:white; font-weight:bold;"></div>
-<nav style="background-image: url('https://i.imgur.com/NqDfbfn.jpeg'); background-size: cover; background-position: center; padding: 20px 20px;">
+<nav style="background-image: url('https://i.imgur.com/JCxt71v.jpeg'); background-size: cover; background-position: center; padding: 20px 20px;">
 
   
   <ul>
@@ -1945,7 +1982,7 @@ button:hover {
   <!-- Notifications & Alerts -->
   <li>
     <a class="menu-box" href="#" onclick="showPage('notifications')" style="position: relative;">
-      <img src="https://i.imgur.com/PtqAWTY.png" alt="Notifications">
+      <img src="https://i.imgur.com/PBto8RH.jpeg" alt="Notifications">
       <span>Admin Notifications</span>
       <span id="notifBadge">0</span>
     </a>
@@ -1995,7 +2032,7 @@ button:hover {
   </li>
 
   <li><a class="menu-box" href="#" onclick="showPage('soulmates')">
-    <img src="https://i.imgur.com/JulT2Na.png" alt="Soulmate">
+    <img src="https://i.imgur.com/FJjbSK9.jpeg" alt="Soulmate">
     <span>Soulmate</span></a>
   </li>
 
@@ -2006,8 +2043,8 @@ button:hover {
 
 <li>
   <a class="menu-box" href="#" onclick="openSentChatsSection()" style="position:relative;">
-    <img src="https://i.imgur.com/9OvoTnl.jpeg" alt="Chats">
-    <span> Chats</span>
+    <img src="https://i.imgur.com/XBAeDCN.jpeg" alt="Sent Chats">
+    <span>Sent Chats</span>
     <!-- Optional: Unread badge for Sent Chats -->
     <span id="sentChatsUnreadBadge" style="display:none; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:11px; position:absolute; top:0; right:0;"></span>
   </a>
@@ -4110,12 +4147,11 @@ async function loadSwaps() {
             🗑️ Delete
           </button>` : "";
 
- const interestButton = (!s.isClosed && !isPoster) || isAdminUser ? `
-  <button onclick="sendSwapInterest('${s.id}', '${s.teacherName}')"
-    style="background:#2196f3;color:white;padding:6px 12px;font-size:13px;border:none;border-radius:6px;cursor:pointer;">
-    💌 Show Interest
-  </button>` : "";
-
+        const interestButton = (!s.isClosed || isPoster || isAdminUser) ? `
+          <button onclick="sendSwapInterest('${s.id}', '${s.teacherName}')"
+            style="background:#2196f3;color:white;padding:6px 12px;font-size:13px;border:none;border-radius:6px;cursor:pointer;">
+            💌 Show Interest
+          </button>` : "";
 
         const followButton = (!s.isClosed || isPoster || isAdminUser) ? `
           <button onclick="followSwap('${s.id}')"
@@ -4995,30 +5031,17 @@ else if (jobType.includes("volunteer")) iconClass = "fa-hands-helping", bgColor 
       </div>
     `;
 
-   const contactSection = (isPoster || hasAccess || isAdmin)
-  ? ` 
-    <p style="color:#009688; font-family: Arial, sans-serif; font-size:14px; margin-bottom:10px;">
-      <strong style="display:flex; align-items:center;">
-        <i class="fas fa-phone-alt" style="color:green; font-size:18px; margin-right:8px;"></i>
-        Phone:
-      </strong>
-      <a href="tel:${job.phone}" style="color:green; text-decoration:none; font-weight: bold;">
-        📞 ${job.phone}
-      </a>
-      <br>
-      <strong style="display:flex; align-items:center; margin-top:8px;">
-        <i class="fab fa-whatsapp" style="color:#25D366; font-size:18px; margin-right:8px;"></i>
-        WhatsApp:
-      </strong>
-      <a href="https://wa.me/254${job.phone.replace(/^0/, '')}" target="_blank" style="color:#25D366; text-decoration:none; font-weight: bold;">
-        💬 Chat on WhatsApp
-      </a>
-    </p>
-    <button onclick="openChatModal('${job.phone}', '${job.organization}')"
-      style="background:#673ab7; color:white; border:none; border-radius:5px; padding:8px 16px; cursor:pointer; font-weight:bold;">
-      💬 Chat
-    </button>
-  `
+    const contactSection = (isPoster || hasAccess || isAdmin)
+      ? ` 
+        <p style="color:#009688;">
+          <strong>${phoneIcon}Phone:</strong><br>
+          <a href="tel:${job.phone}" style="color:green;">📞 Call</a><br>
+          <a href="https://wa.me/254${job.phone.replace(/^0/, '')}" target="_blank" style="color:#25D366;">💬 WhatsApp</a>
+        </p>
+        <button onclick="openChatModal('${job.phone}', '${job.organization}')"
+          style="background:#673ab7; color:white; border:none; border-radius:5px; padding:6px 12px; cursor:pointer;">
+          💬 Chat
+        </button>` 
       : ` 
         <div class="blurred">
           <p style="color:gray;">🔒 Contacts Locked – Pay Ksh 350 to Unlock Contact</p>
@@ -5053,10 +5076,10 @@ else if (jobType.includes("volunteer")) iconClass = "fa-hands-helping", bgColor 
   </button>` : ''}
 
 
-   <button onclick="showInterestInJob('${job.id}')"
-  style="background:#ff9800; color:white; border:none; border-radius:5px; padding:6px 12px; cursor:pointer;">
-  💼 Show Interest
-</button>
+        <button onclick="showInterest('${job.id}')"
+          style="background:#ff9800; color:white; border:none; border-radius:5px; padding:6px 12px; cursor:pointer;">
+          💼 Show Interest
+        </button>
 
         <button onclick="followJob('${job.id}')"
           style="background:#2196f3; color:white; border:none; border-radius:5px; padding:6px 12px; cursor:pointer;">
@@ -5218,7 +5241,9 @@ function updateFollowedCount(jobId) {
     }
   });
 }
-async function showInterestInJob(jobId) {
+
+// Function to handle showing interest and updating followed count
+function showInterest(jobId) {
   const user = firebase.auth().currentUser;
   const userId = user?.uid;
 
@@ -5233,8 +5258,7 @@ async function showInterestInJob(jobId) {
   // Show the loading spinner while processing the interest
   document.getElementById("loadingSpinner").style.display = "flex";
 
-  try {
-    const docSnapshot = await jobRef.get();
+  jobRef.get().then(async docSnapshot => {
     if (!docSnapshot.exists) {
       showCustomAlert("Job not found.", "error");
       document.getElementById("loadingSpinner").style.display = "none"; // Hide spinner
@@ -5250,55 +5274,62 @@ async function showInterestInJob(jobId) {
       return;
     }
 
-    // Add interest
-    const followedCount = (jobData.followedCount || 0) + 1;
-    const updatedFollowedUsers = jobData.followedUsers || [];
-    updatedFollowedUsers.push(userId);
+    try {
+      // Add interest
+      const followedCount = (jobData.followedCount || 0) + 1;
+      const updatedFollowedUsers = jobData.followedUsers || [];
+      updatedFollowedUsers.push(userId);
 
-    await jobRef.update({
-      followedCount: followedCount,
-      followedUsers: updatedFollowedUsers
-    });
-
-    // Update UI
-    if (followedCountElement) {
-      followedCountElement.innerText = `${followedCount} people following`;
-    }
-
-    console.log("Followed count updated successfully.");
-    showCustomAlert("✅ You’ve shown interest in this job.", "success");
-
-    // ✅ Notify Admin
-    await firebase.firestore().collection("adminNotifications").add({
-      type: "Job Interest",
-      jobId: jobId,
-      userId: userId,
-      message: `📌 User with ID ${userId} has shown interest in job ${jobId}.`,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-
-    // ✅ Notify Poster
-    const posterId = jobData.userId;
-    const jobTitle = jobData.jobType || "a job";
-    const organization = jobData.organization || "an organization";
-
-    if (posterId && posterId !== userId) {
-      await firebase.firestore().collection("alerts").add({
-        title: "📌 New Job Interest",
-        message: `${user.displayName || user.email || "Someone"} is interested in your job: ${jobTitle} at ${organization}.`,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        targetUserId: posterId
+      await jobRef.update({
+        followedCount: followedCount,
+        followedUsers: updatedFollowedUsers
       });
+
+      // Update UI
+      if (followedCountElement) {
+        followedCountElement.innerText = `${followedCount} people following`;
+      }
+
+      console.log("Followed count updated successfully.");
+      showCustomAlert("✅ You’ve shown interest in this job.", "success");
+
+      // ✅ Notify Admin
+      await firebase.firestore().collection("adminNotifications").add({
+        type: "Job Interest",
+        jobId: jobId,
+        userId: userId,
+        message: `📌 User with ID ${userId} has shown interest in job ${jobId}.`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // ✅ Notify Poster
+      const posterId = jobData.userId;
+      const jobTitle = jobData.jobType || "a job";
+      const organization = jobData.organization || "an organization";
+
+      if (posterId && posterId !== userId) {
+        await firebase.firestore().collection("alerts").add({
+          title: "📌 New Job Interest",
+          message: `${user.displayName || user.email || "Someone"} is interested in your job: ${jobTitle} at ${organization}.`,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          targetUserId: posterId
+        });
+      }
+
+      console.log("Admin and poster notified.");
+    } catch (error) {
+      console.error("Error updating followed count:", error);
+      showCustomAlert("❌ Failed to register interest: " + error.message, "error");
+    } finally {
+      // Hide the spinner once the operation is complete
+      document.getElementById("loadingSpinner").style.display = "none";
     }
 
-    console.log("Admin and poster notified.");
-  } catch (error) {
-    console.error("Error updating followed count:", error);
+  }).catch((error) => {
+    console.error("Error fetching job data: ", error);
     showCustomAlert("❌ Failed to register interest: " + error.message, "error");
-  } finally {
-    // Hide the spinner once the operation is complete
-    document.getElementById("loadingSpinner").style.display = "none";
-  }
+    document.getElementById("loadingSpinner").style.display = "none"; // Hide spinner
+  });
 }
 
 
@@ -5355,7 +5386,7 @@ async function closeJob(jobId) {
       await db.collection("adminNotifications").add({
         type: "Job Closed",
         jobId: jobId,
-        message: `🔒 A  Job with ID ${jobId} has been marked as closed.`,
+        message: `🔒 A BOM Job with ID ${jobId} has been marked as closed.`,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
     } else {
@@ -5505,7 +5536,7 @@ function applyBOMFilters() {
   renderBOMJobs(filtered);
 
   if (filtered.length === 0) {
-    showCustomAlert("🚫 No matching jobs found.", "warning");
+    showCustomAlert("🚫 No matching BOM jobs found.", "warning");
   }
 }
 
@@ -5551,7 +5582,7 @@ async function confirmDeleteBOMJob(jobId) {
         type: "Job Deletion",
         itemId: jobId,
         itemTitle: jobTitle,
-        message: `🚨 Job titled "${jobTitle}" was deleted.`,
+        message: `🚨 BOM job titled "${jobTitle}" was deleted.`,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
 
@@ -5679,26 +5710,18 @@ document.getElementById("soulmateForm").addEventListener("submit", async (e) => 
     return;
   }
 
-  const photoFiles = document.getElementById("smPhoto").files;
-  let photoURLs = [];
-
-  // Check if the number of photos is within the limit (4 photos max)
-  if (photoFiles.length > 4) {
-    showCustomAlert("⚠️ You can only upload a maximum of 4 photos.", "error");
-    return;
-  }
+  const photoFile = document.getElementById("smPhoto").files[0];
+  let photoURL = "";
 
   // Show the loading spinner while processing
   document.getElementById("loadingSpinner").style.display = "flex";
 
   try {
-    // ✅ Upload photos if available
-    for (let i = 0; i < photoFiles.length; i++) {
-      const photoFile = photoFiles[i];
+    // ✅ Upload photo if available
+    if (photoFile) {
       const photoPath = `soulmatePhotos/${Date.now()}_${photoFile.name}`;
       const photoSnap = await storage.ref(photoPath).put(photoFile);
-      const photoURL = await photoSnap.ref.getDownloadURL();
-      photoURLs.push(photoURL);
+      photoURL = await photoSnap.ref.getDownloadURL();
     }
 
     const data = {
@@ -5713,7 +5736,7 @@ document.getElementById("soulmateForm").addEventListener("submit", async (e) => 
       phone,
       status: document.getElementById("smStatus").value,
       kids: document.getElementById("smKids").value,
-      photoURLs,  // Store array of photo URLs
+      photoURL,
       postedBy: currentUser.uid,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
@@ -5760,6 +5783,7 @@ function listenForLikeChanges(profileId) {
   });
 }
 
+// Function to toggle like (like/unlike)
 async function toggleLike(profileId) {
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -5773,10 +5797,6 @@ async function toggleLike(profileId) {
   const profileDoc = await soulmateRef.doc(profileId).get();
   const profileData = profileDoc.data();
   const theirUid = profileData?.postedBy;
-
-  // Like sound
-  const likeSound = new Audio('assets/like-sound.mp3'); // Update this path to your actual sound file
-  likeSound.play(); // Play the sound when the like button is clicked
 
   if (likeDoc.exists) {
     // 👎 Unlike
@@ -5795,8 +5815,6 @@ async function toggleLike(profileId) {
         showMatchCelebration(); // 🎉 trigger match effect
       }
     }
-  
-
 
     // ✅ Send Alert to Profile Owner
     if (theirUid && theirUid !== user.uid) {
@@ -5974,109 +5992,112 @@ async function loadSoulmates() {
       max-width: 300px;
       box-sizing: border-box;
     `;
-const contactHTML = `
-  <div style="margin:4px 0; font-family: 'Arial', sans-serif; display:flex; flex-direction:column;">
-    <p style="margin:0; color:#333; font-size:14px; display:flex; align-items:center;">
-      <i class="fas fa-phone-alt" style="color:#4CAF50; font-size:18px; margin-right:8px;"></i>
-      <a href="tel:${d.phone}" style="color:green; text-decoration:none;">${d.phone}</a>
-    </p>
-    <p style="margin:4px 0; color:#333; font-size:14px; display:flex; align-items:center;">
-      <i class="fab fa-whatsapp" style="color:#25D366; font-size:18px; margin-right:8px;"></i>
-      <a href="https://wa.me/254${d.phone.replace(/^0/, '')}" target="_blank" style="color:#25D366; text-decoration:none;">WhatsApp</a>
-    </p>
-  </div>`;
 
-const blurredContactHTML = `
-  <div style="margin:4px 0; font-family: 'Arial', sans-serif;">
-    <p style="margin:0; color:#333; font-size:14px; display:flex; align-items:center;">
-      <i class="fas fa-phone-alt" style="color:#4CAF50; font-size:18px; margin-right:8px;"></i>
-      <span style="filter:blur(4px);">0700000000</span>
-    </p>
-    <p style="margin:4px 0; color:#333; font-size:14px; display:flex; align-items:center;">
-      <i class="fab fa-whatsapp" style="color:#25D366; font-size:18px; margin-right:8px;"></i>
-      <span style="filter:blur(4px);">WhatsApp</span>
-    </p>
-    <div style="margin-top:10px; color: #D32F2F; font-size:14px; font-weight:600;">
-      🔒 <span style="color:#D32F2F;">Pay Ksh 200 to Unlock</span>
-    </div>
-    <button onclick="handleSoulmateAction('${id}', 'unlock')" style="margin-top:10px; background:#D32F2F; color:white; border:none; padding:8px 14px; border-radius:6px; font-size:14px; font-weight:bold; cursor:pointer; transition: background-color 0.3s;">
-      💳 Pay Now
-    </button>
-  </div>
-`;
+    // Profile image handling
+    const images = d.photos || [];
+    const profileImageHTML = images.length > 0 ? `
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        ${images.map((photo, index) => `
+          <img src="${photo}" alt="Profile Image ${index + 1}" style="width: 60px; height: 60px; object-fit: cover; margin-bottom: 10px; border-radius: 8px; cursor: pointer;" onclick="openImageModal(${index}, ${JSON.stringify(images)})">
+        `).join('')}
+      </div>
+    ` : `
+      <div style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; color: #888; cursor: pointer;" onclick="openImageModal()">
+        No Image
+      </div>
+    `;
 
+    const contactHTML = `
+      <div style="margin:4px 0;">
+        📞 <a href="tel:${d.phone}" style="color:green;">${d.phone}</a><br>
+        💬 <a href="https://wa.me/254${d.phone.replace(/^0/, '')}" target="_blank" style="color:#25D366;">WhatsApp</a>
+      </div>`;
 
-card.innerHTML = `
-  ${d.verified ? `
-    <div class="verified-badge" style="position: absolute; top: 8px; right: 8px; background-color: #4CAF50; color: white; border-radius: 8px; padding: 4px 10px; display: flex; align-items: center; font-size: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.3s ease-in-out; cursor: pointer;">
-      <i class="fas fa-check" style="font-size: 16px; margin-right: 6px;"></i>
-      <span style="font-weight: bold;">Verified</span>
-    </div>
-  ` : ""}
+    const blurredContactHTML = `
+      <div style="margin:4px 0;">
+        📞 <span style="filter:blur(4px);">0700000000</span><br>
+        💬 <span style="filter:blur(4px);">WhatsApp</span>
+        <div style="margin-top:6px;color:crimson;font-size:13px;">🔒 Pay Ksh 200 to Unlock</div>
+        <button onclick="handleSoulmateAction('${id}', 'unlock')" style="margin-top:5px;background:crimson;color:white;border:none;padding:4px 10px;border-radius:4px;">💳 Pay</button>
+      </div>`;
 
+    // Profile closure handling
+    const profileContent = d.isClosed ? `
+      <p style="color:#999;">Profile Closed</p>
+      <h4 style="margin:0 0 6px;font-size:16px;"><strong>Name:</strong> ${d.name}</h4>
+    ` : `
+      <h4 style="margin:0 0 6px;font-size:16px;"><strong>Name:</strong> ${d.name}</h4>
+      <p style="margin:0;color:#ff5722;"><strong>Sex:</strong> ${d.sex ? `${d.sex === 'Male' ? '♂️' : '♀️'} ${d.sex}` : '—'}</p>
+      <p style="margin:0;"><strong>Location:</strong> <span style="color:#009688;">${d.county || '—'}</span>${d.subCounty ? ` / <span style="color:#6a1b9a;">${d.subCounty}</span>` : ''}</p>
+      <p style="margin:0;color:#6a1b9a;"><strong>Tribe:</strong> ${d.tribe || '—'}</p>
+      <p style="margin:0;color:#ff5722;"><strong>Age:</strong> ${d.age}</p>
+      <p style="margin:0;color:#795548;"><strong>Status:</strong> ${d.status || '—'} ${d.status === "Single" ? "💔" : d.status === "Married" ? "💍" : ""}</p>
+      <p style="margin:0;color:#607d8b;"><strong>Occupation:</strong> ${d.occupation}</p>
+      <div style="margin-top:6px;">
+        ${hasPaid || isPoster || isAdminUser ? contactHTML : blurredContactHTML}
+      </div>`;
 
-  ${!d.verified && isPoster && !isAdminUser ? `
-    <button onclick="showPaymentModalFor('soulmateVerification', 200, '${id}', '${d.name || ''}')"
-      style="position:absolute;top:8px;right:8px;background:#4CAF50;color:white;border:none;padding:6px 10px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:bold;">
-      ✅ Get Verified – Ksh 200
-    </button>` : ""}
+    card.innerHTML = `
+      ${profileImageHTML}
+      ${d.verified ? `
+        <div class="verified-badge" style="position: absolute; top: 8px; right: 8px; background-color: #1DA1F2; color: white; border-radius: 25px; padding: 4px 10px; display: flex; align-items: center; font-size: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease-in-out; cursor: pointer;">
+          <i class="fas fa-check" style="transform: scale(1.2); margin-right: 5px;"></i>
+          Verified
+        </div>
+      ` : ""}
+      ${profileContent}
+      <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+        <button id="likeBtn-${id}" onclick="toggleLike('${id}')"
+          style="background:#e91e63; color:white; border:none; padding:5px 12px; border-radius:50px; cursor:pointer;">
+          🤍 Like
+        </button>
+        <span id="likeCount-${id}" style="font-weight:bold; cursor:pointer;" onclick="showLikes('${id}')">
+          ${totalLikes} Likes
+        </span>
+      </div>
+    `;
 
-  ${!d.verified && isAdminUser ? `
-    <button onclick="adminVerifyItem('soulmate', '${id}')"
-      style="position:absolute;top:8px;right:8px;background:#007BFF;color:white;border:none;padding:6px 10px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:bold;">
-      🛡️ Verify Now (Admin)
-    </button>` : ""}
-
-  ${d.isBoosted ? `<div style="position:absolute;top:8px;left:8px;background:#ff9800;color:white;border-radius:4px;padding:2px 8px;font-size:12px;">🔥 Boosted</div>` : ""}
-
-  <div style="margin-top:24px;">
-    <i class="fas ${d.sex === 'Male' ? 'fa-user-tie' : 'fa-user-nurse'}" style="font-size:46px; color:${d.sex === 'Male' ? '#3f51b5' : '#e91e63'};"></i>
-  </div>
-  <h4 style="margin:0 0 6px;font-size:16px;"><strong>Name:</strong> ${d.name}</h4>
-  <p style="margin:0;color:#ff5722;"><strong>Sex:</strong> ${d.sex ? `${d.sex === 'Male' ? '♂️' : '♀️'} ${d.sex}` : '—'}</p>
-  <p style="margin:0;"><strong>Location:</strong> <span style="color:#009688;">${d.county || '—'}</span>${d.subCounty ? ` / <span style="color:#6a1b9a;">${d.subCounty}</span>` : ''}</p>
-  <p style="margin:0;color:#6a1b9a;"><strong>Tribe:</strong> ${d.tribe || '—'}</p>
-  <p style="margin:0;color:#ff5722;"><strong>Age:</strong> ${d.age}</p>
-  <p style="margin:0;color:#795548;"><strong>Status:</strong> ${d.status || '—'} ${d.status === "Single" ? "💔" : d.status === "Married" ? "💍" : ""}</p>
-  <p style="margin:0;color:#607d8b;"><strong>Occupation:</strong> ${d.occupation}</p>
-
-  <div style="margin-top:6px;">
-    ${hasPaid || isPoster || isAdminUser ? contactHTML : blurredContactHTML}
-  </div>
-
-  <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
-    <button id="likeBtn-${id}" onclick="toggleLike('${id}')"
-      style="background:#e91e63; color:white; border:none; padding:6px 14px; border-radius:30px; cursor:pointer; font-weight:bold;">
-      🤍 Like
-    </button>
-    <span id="likeCount-${id}" style="font-weight:bold; cursor:pointer;" onclick="showLikes('${id}')">
-      ${totalLikes} Likes
-    </span>
-  </div>
-
-  ${(isPoster || isAdminUser) ? `
-    <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px;">
-      <button onclick="deleteSoulmate('${id}')"
-        style="background:#dc3545; color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">
-        🗑️ Delete
-      </button>
-      <button onclick="handleSoulmateAction('${id}', 'boost')"
-        style="background:#ff9800; color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">
-        🚀 Boost
-      </button>
-      <button onclick="toggleSoulmateStatus('${id}', ${d.isClosed})"
-        style="background:${d.isClosed ? '#28a745' : '#6c757d'}; color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">
-        ${d.isClosed ? '♻️ Reopen' : '🚫 Mark as Closed'}
-      </button>
-    </div>` : ''}
-`;
-
-container.appendChild(card);
-updateLikeUI(id);
-listenForLikeChanges(id);
-
+    container.appendChild(card);
+    updateLikeUI(id);
+    listenForLikeChanges(id);
   });
 }
+
+// Function to open image modal
+function openImageModal(index = 0, images = []) {
+  const modal = document.createElement('div');
+  modal.classList.add('image-modal');
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close" onclick="closeImageModal()">×</span>
+      <div class="carousel">
+        ${images.map((img, idx) => `
+          <img src="${img}" style="width: 100%; max-height: 80vh; object-fit: contain; display: ${index === idx ? 'block' : 'none'};" class="carousel-image">
+        `).join('')}
+      </div>
+      <button class="prev" onclick="changeImage(-1)">❮</button>
+      <button class="next" onclick="changeImage(1)">❯</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+// Function to close the image modal
+function closeImageModal() {
+  const modal = document.querySelector('.image-modal');
+  if (modal) modal.remove();
+}
+
+// Function to change image in modal
+function changeImage(direction) {
+  const images = document.querySelectorAll('.carousel-image');
+  let currentIndex = Array.from(images).findIndex(image => image.style.display === 'block');
+  currentIndex = (currentIndex + direction + images.length) % images.length;
+  images.forEach((image, idx) => {
+    image.style.display = (idx === currentIndex) ? 'block' : 'none';
+  });
+}
+
 
 
 
@@ -6707,7 +6728,6 @@ const iconHTML = `
   <div style="padding: 18px; background: ${bgColor};">
     <i class="fas ${iconClass}" style="font-size: 50px; color: #fff;"></i>
   </div>`;
-
 const phoneIcon = '<i class="fas fa-phone-alt" style="margin-right: 6px;"></i>';
 const whatsappIcon = '<i class="fab fa-whatsapp" style="margin-right: 6px;"></i>';
 const experienceIcon = '<i class="fas fa-briefcase" style="margin-right: 6px;"></i>';
@@ -7692,9 +7712,22 @@ async function loadMarketItems() {
       if (isBoosted) card.dataset.boosted = "true";
       card.style.position = "relative";
 
+      // Image display handling (for multiple images)
+      const images = d.photoURLs || []; // Assuming 'photoURLs' is an array of image URLs
+      let imageHTML = '';
+      if (images.length > 0) {
+        images.forEach((img, idx) => {
+          imageHTML += `
+            <img src="${img}" alt="Item Image ${idx + 1}" style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:8px; cursor:pointer;" onclick="openImageModal(${idx}, ${JSON.stringify(images)})">
+          `;
+        });
+      } else {
+        imageHTML = `<div style="width:100%; height:180px; background: #f0f0f0; border-radius:8px; margin-bottom:8px; display: flex; justify-content: center; align-items: center; color: #888; cursor: pointer;" onclick="openImageModal()">No Images</div>`;
+      }
+
       card.innerHTML = `
         <h3 style="margin-bottom:6px; color:#2e7d32;">${d.posterName || "Unknown Seller"} ${verifiedBadge} ${boostBadge}</h3>
-        ${d.photoURL ? `<img src="${d.photoURL}" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:8px;">` : ""}
+        ${imageHTML}
         <p style="color:#4caf50;">📦 <strong>Item name:</strong> ${d.name || "-"}</p>
         <p style="color:#2196f3;">📝 <strong>Status:</strong> ${d.description || "-"}</p>
         <p style="color:#e91e63;">🏷️ <strong>Category:</strong> ${d.category || "-"}</p>
@@ -7703,7 +7736,6 @@ async function loadMarketItems() {
         <p style="color:#3f51b5;">📍 <strong>Location:</strong> ${d.county || "Unknown"}, ${d.subcounty || "Unknown"}</p>
         <p style="color:#673ab7;">📞 <strong>Contact:</strong> ${d.phone || "N/A"}</p>
         ${verifyBtnHTML}
-        
         <!-- Add View Chat Button for Poster -->
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
           ${isPoster ? `
@@ -7714,7 +7746,6 @@ async function loadMarketItems() {
             </button>
           ` : ""}
         </div>
-
         ${(!isPoster && currentUser) ? `
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
             <button onclick="showMarketInterest('${id}')" style="background:#f44336;color:#fff;border:none;border-radius:5px;padding:6px 12px;">💬 Interest <span id="marketInterestCount-${id}">0</span></button>
@@ -7725,33 +7756,6 @@ async function loadMarketItems() {
               💬 Chat
             </button>
             <button onclick="openReviewModal('${id}')" style="background:#4CAF50;color:#fff;border:none;border-radius:5px;padding:6px 12px;">📝 Review</button>
-          </div>
-        ` : ""}
-
-        ${isPoster ? `
-          <div style="margin-top:10px;">
-            <button id="soldOutBtn-${id}" onclick="toggleSoldStatus('${id}')" style="background:#9e9e9e;color:#fff;border:none;border-radius:5px;padding:6px 12px;">
-              ${d.isSold ? "❌ Sold Out" : "✅ Mark as Sold"}
-            </button>
-          </div>
-        ` : ""}
-        <div style="margin-top:10px;">
-          <h4 style="color:#4CAF50;">📢 Customer Reviews</h4>
-          <div id="marketReviews-${id}" style="margin-top:10px;font-size:14px;"></div>
-          <div style="margin-top:10px;">
-            <button onclick="openAllReviewsModal('${id}')" style="background:#03a9f4;color:#fff;border:none;border-radius:5px;padding:6px 12px;">💬 View All Reviews</button>
-          </div>
-        </div>
-        ${(canDelete || canBoost) ? `
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
-            ${canDelete ? `<button onclick="deleteMarketItem('${id}')" style="background:#dc3545;color:#fff;border:none;border-radius:5px;padding:6px 12px;">🗑️ Delete</button>` : ""}
-            ${canBoost && !isBoosted ? `<button onclick="boostMarketItem('${id}')" style="background:#ff9800;color:#fff;border:none;border-radius:5px;padding:6px 12px;">🚀 Boost</button>` : ""}
-            ${isPoster && isExpired ? `<button onclick="renewBoost('${id}')" style="background:#ff9800;color:#fff;border:none;border-radius:5px;padding:6px 12px;">🔄 Renew Boost</button>` : ""}
-          </div>
-        ` : ""}
-        ${(isPoster || isAdmin) ? `
-          <div style="margin-top:10px;">
-            <button onclick="openEditForm('${id}')" style="background:#673ab7;color:#fff;border:none;border-radius:5px;padding:6px 12px;">✏️ Edit Item</button>
           </div>
         ` : ""}
       `;
@@ -7766,6 +7770,44 @@ async function loadMarketItems() {
     console.error("❌ Error loading market items:", err);
   }
 }
+
+// Function to open image modal with multiple images
+function openImageModal(index = 0, images = []) {
+  const modal = document.createElement('div');
+  modal.classList.add('image-modal');
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close" onclick="closeImageModal()">×</span>
+      <div class="carousel">
+        ${images.length > 0 ? images.map((img, idx) => `
+          <img src="${img}" style="width: 100%; max-height: 80vh; object-fit: contain; display: ${index === idx ? 'block' : 'none'};" class="carousel-image">
+        `).join('') : '<p style="text-align: center;">No Images Available</p>'}
+      </div>
+      <button class="prev" onclick="navigateImageModal(-1)">❮ Prev</button>
+      <button class="next" onclick="navigateImageModal(1)">❯ Next</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+// Function to close the image modal
+function closeImageModal() {
+  const modal = document.querySelector('.image-modal');
+  if (modal) modal.remove();
+}
+
+// Function to navigate through images
+function navigateImageModal(direction) {
+  const images = document.querySelectorAll('.carousel-image');
+  let currentIndex = [...images].findIndex(image => image.style.display === 'block');
+  currentIndex = (currentIndex + direction + images.length) % images.length;
+  images.forEach((image, idx) => {
+    image.style.display = (idx === currentIndex) ? 'block' : 'none';
+  });
+}
+
+
+
 // ✅ Global Chat State
 const marketChatState = {
   currentReceiverUid: null,
