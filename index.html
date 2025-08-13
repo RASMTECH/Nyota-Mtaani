@@ -1922,7 +1922,7 @@ button:hover {
 
 </head>
 <body>
-<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-image: url('https://i.imgur.com/6kuZECC.jpeg'); background-size: cover; background-position: center;">
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-image: url('https://i.imgur.com/cm7xKDS.jpeg'); background-size: cover; background-position: center;">
 
   <!-- Left Image -->
   <img src="https://i.imgur.com/pdTgJX3.jpeg" alt="Left Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
@@ -1959,7 +1959,7 @@ button:hover {
   </div>
 </div>
 <div id="loggedInUser" style="position:absolute; top:15px; right:20px; color:white; font-weight:bold;"></div>
-<nav style="background-image: url('https://i.imgur.com/JCxt71v.jpeg'); background-size: cover; background-position: center; padding: 20px 20px;">
+<nav style="background-image: url('https://i.imgur.com/NqDfbfn.jpeg'); background-size: cover; background-position: center; padding: 20px 20px;">
 
   
   <ul>
@@ -2995,10 +2995,15 @@ Register To Connect With  Available Soulmates
   <label for="svcPhone" style="color:#333;font-weight:bold;">Phone Number:</label>
   <input type="tel" id="svcPhone" required style="width:100%;padding:10px;margin:6px 0 18px;border:1px solid #ccc;border-radius:6px;"/>
 
+  <!-- Optional Photo Upload -->
+  <label for="svcPhotos" style="color:#333;font-weight:bold;">Upload Photos (Optional):</label>
+  <input type="file" id="svcPhotos" accept="image/*" multiple style="width:100%;padding:10px;margin:6px 0 18px;border:1px solid #ccc;border-radius:6px;"/>
+
   <button type="submit" style="width:100%;background:#00796b;color:white;padding:12px;border:none;border-radius:8px;font-size:16px;cursor:pointer;">
     <i class="fas fa-concierge-bell"></i> Submit Service
   </button>
 </form>
+
 
  <img src="https://i.imgur.com/qUGmfzC.jpeg " alt="Left Side" class="side-image" />
  <img src="https://i.imgur.com/V2t9pgK.jpeg " alt="Left Side" class="side-image" />
@@ -6553,6 +6558,7 @@ async function submitServiceHandler(e) {
   }
 }
 
+
 async function loadServices() {
   const container = document.getElementById("servicesContainer");
   const trendingContainer = document.getElementById("trendingContainer");
@@ -6622,117 +6628,39 @@ async function loadServices() {
     const interestCount = d.interestedUsers ? d.interestedUsers.length : 0;
     const interestCountText = `${interestCount} ${interestCount === 1 ? "person" : "people"} interested`;
 
-const occupation = d.occupation?.toLowerCase?.() || "";
-let iconClass = "fa-user-tie", bgColor = "#607d8b";
+    const occupation = d.occupation?.toLowerCase?.() || "";
+    let iconClass = "fa-user-tie", bgColor = "#607d8b";
 
-// --- Original occupations ---
-if (occupation.includes("lawyer")) iconClass = "fa-balance-scale", bgColor = "#5c6bc0";
-else if (occupation.includes("teacher")) iconClass = "fa-chalkboard-teacher", bgColor = "#42a5f5";
-else if (occupation.includes("driver")) iconClass = "fa-car", bgColor = "#26a69a";
-else if (occupation.includes("nurse")) iconClass = "fa-user-nurse", bgColor = "#ec407a";
-else if (occupation.includes("chef")) iconClass = "fa-utensils", bgColor = "#ffa726";
-else if (occupation.includes("plumber")) iconClass = "fa-tools", bgColor = "#7e57c2";
+    // --- Original occupations ---
+    if (occupation.includes("lawyer")) iconClass = "fa-balance-scale", bgColor = "#5c6bc0";
+    else if (occupation.includes("teacher")) iconClass = "fa-chalkboard-teacher", bgColor = "#42a5f5";
+    else if (occupation.includes("ict specialist")) iconClass = "fa-network-wired", bgColor = "#1565c0";
+    else if (occupation.includes("laundry")) iconClass = "fa-soap", bgColor = "#4dd0e1";
 
-// --- Extended occupations ---
-else if (occupation.includes("developer")) iconClass = "fa-laptop-code", bgColor = "#42a5f5";
-else if (occupation.includes("designer")) iconClass = "fa-paint-brush", bgColor = "#9c27b0";
-else if (occupation.includes("doctor")) iconClass = "fa-user-md", bgColor = "#f44336";
-else if (occupation.includes("pilot")) iconClass = "fa-plane", bgColor = "#2196f3";
-else if (occupation.includes("mechanic")) iconClass = "fa-tools", bgColor = "#795548";
-else if (occupation.includes("electrician")) iconClass = "fa-bolt", bgColor = "#ff9800";
-else if (occupation.includes("farmer")) iconClass = "fa-tractor", bgColor = "#4caf50";
-else if (occupation.includes("engineer")) iconClass = "fa-cogs", bgColor = "#607d8b";
-else if (occupation.includes("architect")) iconClass = "fa-drafting-compass", bgColor = "#9e9d24";
-else if (occupation.includes("judge")) iconClass = "fa-gavel", bgColor = "#3e2723";
-else if (occupation.includes("police")) iconClass = "fa-shield-alt", bgColor = "#1a237e";
-else if (occupation.includes("security")) iconClass = "fa-user-shield", bgColor = "#000000";
-else if (occupation.includes("firefighter")) iconClass = "fa-fire-extinguisher", bgColor = "#d32f2f";
-else if (occupation.includes("scientist")) iconClass = "fa-flask", bgColor = "#00bcd4";
-else if (occupation.includes("pharmacist")) iconClass = "fa-pills", bgColor = "#8e24aa";
-else if (occupation.includes("dentist")) iconClass = "fa-tooth", bgColor = "#fbc02d";
-else if (occupation.includes("veterinarian")) iconClass = "fa-paw", bgColor = "#8d6e63";
-else if (occupation.includes("waiter")) iconClass = "fa-concierge-bell", bgColor = "#ff9800";
-else if (occupation.includes("receptionist")) iconClass = "fa-phone", bgColor = "#4caf50";
-else if (occupation.includes("sales")) iconClass = "fa-cash-register", bgColor = "#009688";
-else if (occupation.includes("accountant")) iconClass = "fa-calculator", bgColor = "#3f51b5";
-else if (occupation.includes("banker")) iconClass = "fa-university", bgColor = "#0d47a1";
-else if (occupation.includes("marketer")) iconClass = "fa-bullhorn", bgColor = "#ff5722";
-else if (occupation.includes("photographer")) iconClass = "fa-camera", bgColor = "#6a1b9a";
-else if (occupation.includes("videographer")) iconClass = "fa-video", bgColor = "#c2185b";
-else if (occupation.includes("model")) iconClass = "fa-user", bgColor = "#f48fb1";
-else if (occupation.includes("actor")) iconClass = "fa-theater-masks", bgColor = "#ff9800";
-else if (occupation.includes("musician")) iconClass = "fa-music", bgColor = "#5e35b1";
-else if (occupation.includes("dj")) iconClass = "fa-headphones", bgColor = "#512da8";
-else if (occupation.includes("tailor")) iconClass = "fa-cut", bgColor = "#ff7043";
-else if (occupation.includes("cleaner")) iconClass = "fa-broom", bgColor = "#66bb6a";
-else if (occupation.includes("translator")) iconClass = "fa-language", bgColor = "#0097a7";
-else if (occupation.includes("tour guide")) iconClass = "fa-map-marked-alt", bgColor = "#43a047";
-else if (occupation.includes("barista")) iconClass = "fa-coffee", bgColor = "#6d4c41";
-else if (occupation.includes("butcher")) iconClass = "fa-drumstick-bite", bgColor = "#d84315";
-else if (occupation.includes("baker")) iconClass = "fa-bread-slice", bgColor = "#f57c00";
-else if (occupation.includes("fisherman")) iconClass = "fa-fish", bgColor = "#0288d1";
-else if (occupation.includes("construction worker")) iconClass = "fa-hard-hat", bgColor = "#ffa000";
-else if (occupation.includes("miner")) iconClass = "fa-gem", bgColor = "#616161";
-else if (occupation.includes("social worker")) iconClass = "fa-hands-helping", bgColor = "#ff7043";
-else if (occupation.includes("delivery")) iconClass = "fa-shipping-fast", bgColor = "#ef6c00";
-else if (occupation.includes("call center")) iconClass = "fa-headset", bgColor = "#3949ab";
-else if (occupation.includes("it support")) iconClass = "fa-server", bgColor = "#1e88e5";
-else if (occupation.includes("seo specialist")) iconClass = "fa-search", bgColor = "#00acc1";
-else if (occupation.includes("content writer")) iconClass = "fa-pen-nib", bgColor = "#ab47bc";
-else if (occupation.includes("blogger")) iconClass = "fa-blog", bgColor = "#7b1fa2";
-else if (occupation.includes("youtuber")) iconClass = "fa-video", bgColor = "#e53935";
-else if (occupation.includes("data analyst")) iconClass = "fa-chart-line", bgColor = "#2e7d32";
-else if (occupation.includes("data scientist")) iconClass = "fa-database", bgColor = "#1565c0";
-else if (occupation.includes("ai engineer")) iconClass = "fa-robot", bgColor = "#00bcd4";
-else if (occupation.includes("cyber security")) iconClass = "fa-user-secret", bgColor = "#263238";
-else if (occupation.includes("blockchain")) iconClass = "fa-link", bgColor = "#ff6f00";
-else if (occupation.includes("crypto trader")) iconClass = "fa-coins", bgColor = "#ffb300";
-else if (occupation.includes("real estate")) iconClass = "fa-building", bgColor = "#8d6e63";
-else if (occupation.includes("insurance agent")) iconClass = "fa-file-contract", bgColor = "#455a64";
-else if (occupation.includes("loan officer")) iconClass = "fa-hand-holding-usd", bgColor = "#558b2f";
-else if (occupation.includes("event planner")) iconClass = "fa-calendar-check", bgColor = "#9c27b0";
-else if (occupation.includes("makeup artist")) iconClass = "fa-magic", bgColor = "#ec407a";
-else if (occupation.includes("hair stylist")) iconClass = "fa-cut", bgColor = "#f06292";
-else if (occupation.includes("barber")) iconClass = "fa-user", bgColor = "#8d6e63";
-else if (occupation.includes("painter")) iconClass = "fa-paint-roller", bgColor = "#5d4037";
-else if (occupation.includes("carpenter")) iconClass = "fa-hammer", bgColor = "#795548";
-else if (occupation.includes("welder")) iconClass = "fa-tools", bgColor = "#ff7043";
-else if (occupation.includes("roofer")) iconClass = "fa-home", bgColor = "#ff7043";
-else if (occupation.includes("landscaper")) iconClass = "fa-tree", bgColor = "#4caf50";
-else if (occupation.includes("truck driver")) iconClass = "fa-truck-moving", bgColor = "#4e342e";
-else if (occupation.includes("taxi driver")) iconClass = "fa-taxi", bgColor = "#fbc02d";
-else if (occupation.includes("bus driver")) iconClass = "fa-bus", bgColor = "#f57c00";
-else if (occupation.includes("train conductor")) iconClass = "fa-train", bgColor = "#3f51b5";
-else if (occupation.includes("ship captain")) iconClass = "fa-anchor", bgColor = "#0d47a1";
-else if (occupation.includes("flight attendant")) iconClass = "fa-plane-departure", bgColor = "#03a9f4";
-else if (occupation.includes("warehouse worker")) iconClass = "fa-boxes", bgColor = "#8d6e63";
-else if (occupation.includes("packer")) iconClass = "fa-box", bgColor = "#a1887f";
-else if (occupation.includes("logistics")) iconClass = "fa-shipping-fast", bgColor = "#009688";
-else if (occupation.includes("quality inspector")) iconClass = "fa-clipboard-check", bgColor = "#388e3c";
-else if (occupation.includes("project manager")) iconClass = "fa-tasks", bgColor = "#607d8b";
-else if (occupation.includes("foreman")) iconClass = "fa-hard-hat", bgColor = "#ffa000";
-else if (occupation.includes("researcher")) iconClass = "fa-microscope", bgColor = "#1e88e5";
-else if (occupation.includes("lecturer")) iconClass = "fa-user-graduate", bgColor = "#3949ab";
-else if (occupation.includes("professor")) iconClass = "fa-graduation-cap", bgColor = "#283593";
-else if (occupation.includes("coach")) iconClass = "fa-dumbbell", bgColor = "#f44336";
-else if (occupation.includes("personal trainer")) iconClass = "fa-running", bgColor = "#ff7043";
-else if (occupation.includes("lifeguard")) iconClass = "fa-life-ring", bgColor = "#0288d1";
-else if (occupation.includes("swimming instructor")) iconClass = "fa-swimmer", bgColor = "#039be5";
-else if (occupation.includes("intern")) iconClass = "fa-user-graduate", bgColor = "#8e24aa";
-else if (occupation.includes("volunteer")) iconClass = "fa-hands-helping", bgColor = "#43a047";
-else if (occupation.includes("house manager")) iconClass = "fa-home", bgColor = "#8d6e63";
-else if (occupation.includes("maid")) iconClass = "fa-broom", bgColor = "#f48fb1";
-else if (occupation.includes("ict specialist")) iconClass = "fa-network-wired", bgColor = "#1565c0";
-else if (occupation.includes("laundry")) iconClass = "fa-soap", bgColor = "#4dd0e1";
-const iconHTML = `
-  <div style="padding: 18px; background: ${bgColor};">
-    <i class="fas ${iconClass}" style="font-size: 50px; color: #fff;"></i>
-  </div>`;
-const phoneIcon = '<i class="fas fa-phone-alt" style="margin-right: 6px;"></i>';
-const whatsappIcon = '<i class="fab fa-whatsapp" style="margin-right: 6px;"></i>';
-const experienceIcon = '<i class="fas fa-briefcase" style="margin-right: 6px;"></i>';
-const locationIcon = '<i class="fas fa-map-marker-alt" style="margin-right: 6px;"></i>';
+    const iconHTML = `
+      <div style="padding: 18px; background: ${bgColor};">
+        <i class="fas ${iconClass}" style="font-size: 50px; color: #fff;"></i>
+      </div>`;
+    
+    const phoneIcon = '<i class="fas fa-phone-alt" style="margin-right: 6px;"></i>';
+    const whatsappIcon = '<i class="fab fa-whatsapp" style="margin-right: 6px;"></i>';
+    const experienceIcon = '<i class="fas fa-briefcase" style="margin-right: 6px;"></i>';
+    const locationIcon = '<i class="fas fa-map-marker-alt" style="margin-right: 6px;"></i>';
 
+    // Image handling (for multiple images)
+    const images = d.photoURLs || [];
+    let imageHTML = '';
+    if (images.length > 0) {
+      images.forEach((img, idx) => {
+        imageHTML += `
+          <img src="${img}" alt="Service Image ${idx + 1}" style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:8px; cursor:pointer;" onclick="openImageModal(${idx}, ${JSON.stringify(images)})">
+        `;
+      });
+    } else {
+      imageHTML = `<div style="width:100%; height:180px; background: #f0f0f0; border-radius:8px; margin-bottom:8px; display: flex; justify-content: center; align-items: center; color: #888; cursor: pointer;" onclick="openImageModal()">No Images</div>`;
+    }
+
+    // Display contact info based on service status and user type
 // Display contact info based on service status and user type
 const contactHTML = (d.isActive || isPoster || hasServiceAccess || isAdminUser)
   ? `
@@ -6752,131 +6680,146 @@ const contactHTML = (d.isActive || isPoster || hasServiceAccess || isAdminUser)
     <div style="padding: 15px; background-color: #f1f1f1; border-radius: 8px; text-align: center;">
       <p style="color: gray; font-size: 16px; font-weight: bold;">🔒 Service Inactive</p>
       <p style="color: #757575; font-size: 14px;">Pay Ksh 250 to activate your service and unlock the contact information to your service providers.</p>
-      <button onclick="showPaymentModalFor('serviceActivation', 250, '${id}', 'Activate Service')" 
-        style="background-color: crimson; color: white; padding: 10px 20px; border: none; border-radius: 25px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">
-        💳 Pay Ksh 250 to Activate Service
-      </button>
+      ${isPoster ? `
+        <button onclick="showPaymentModalFor('serviceActivation', 250, '${id}', 'Activate Service')" 
+          style="background-color: crimson; color: white; padding: 10px 20px; border: none; border-radius: 25px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">
+          💳 Pay Ksh 250 to Activate Service
+        </button>` : ''}
     </div>
   `;
 
+
 let actionButtonsHTML = `
+
+  <!-- Boost Service Button (Visible to Poster or Admin) -->
   ${isPoster || isAdminUser ? `
     <button onclick="${isAdminUser ? `boostServiceDirectly('${id}')` : `showPaymentModalFor('serviceBoost', 250, '${id}', '${d.name}')`}"
       style="background:orange; color:white; border:none; padding:10px 20px; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
       🔥 Boost This Service
     </button>` : ''}
 
+  <!-- Get Verified Badge Button (Visible to Poster if not verified) -->
   ${!d.verified && isPoster && !isAdminUser ? `
     <button onclick="showPaymentModalFor('serviceVerification', 250, '${id}', '${d.name}')"
       style="background:#4CAF50; color:white; padding:10px 20px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
       ✅ Get Verified Badge – Ksh 250
     </button>` : ''}
 
+  <!-- Verify Service Button (Visible to Admin) -->
   ${!d.verified && isAdminUser ? `
     <button onclick="adminVerifyItem('service', '${id}')"
       style="background:#2196F3; color:white; padding:10px 20px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
       🛡️ Verify Now (Admin)
     </button>` : ''}
 
+  <!-- Activate Service Button (Visible to Poster if inactive) -->
   ${isPoster && !d.isActive ? `
     <button onclick="showPaymentModalFor('serviceActivation', 250, '${id}', 'Activate Service')"
       style="background:#4CAF50; color:white; padding:10px 20px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
       ✅ Activate Your Service – Ksh 250
     </button>` : ''}
 
+  <!-- Admin Button to Activate/Deactivate Service -->
   ${isAdminUser ? `
     <button onclick="toggleServiceStatus('${id}')"
       style="background:#4CAF50; color:white; padding:10px 20px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
       🔄 Activate/Deactivate Service (Admin)
     </button>` : ''}
 
+  <!-- Edit Service Button (Visible to Poster or Admin) -->
   ${isPoster || isAdminUser ? `
     <button onclick="editService('${id}')"
       style="background:#ff9800; color:white; padding:10px 20px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
       ✏️ Edit Service
     </button>` : ''}
 
+  <!-- Leave a Review Button (Visible to any User) -->
   <button onclick="showReviewModal('${id}')"
     style="background:#4caf50; color:white; padding:10px 20px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
     📝 Leave a Review
   </button>
 
+  <!-- Show Interest Button (Visible to any User) -->
   <button onclick="showInterest('${id}')"
     style="background:#ff5722; color:white; padding:10px 20px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin-top:10px;">
     ❤️ Show Interest
   </button>
 
+  <!-- Delete Service Button (Visible to Poster or Admin) -->
   ${isPoster || isAdminUser ? `
     <button onclick="deleteService('${id}')"
       style="background:#dc3545; color:white; padding:10px 20px; margin-top:10px; border:none; border-radius:25px; font-size:16px; cursor:pointer;">
       🗑️ Delete
-    </button>` : ''}`;
-
-const card = document.createElement("div");
-card.className = "service-card";
-card.id = `service-${id}`;
-card.dataset.county = d.county;
-card.dataset.occupation = occupation;
-card.style.cssText = `
-  position: relative;
-  border: 2px solid ${isBoosted ? 'orange' : '#ddd'};
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 18px;
-  box-shadow: ${isBoosted ? '0 0 12px rgba(255,165,0,0.5)' : '0 2px 6px rgba(0,0,0,0.08)'};
-  background: #fff;
-  text-align: center;
-  transition: all 0.3s ease;
+    </button>` : ''}
 `;
 
-card.innerHTML = `
-  ${iconHTML}
-  <div style="padding: 14px; text-align:left;">
-    ${verifiedBadge}
-    <h3 style="margin: 6px 0; color:#00796b;">${d.name} ${boostBadge}</h3>
-    <p style="color:#3f51b5;"><strong>${locationIcon}County:</strong> ${d.county}</p>
-    <p style="color:#d32f2f;"><strong>Occupation:</strong> <span class="highlight-occupation">${d.occupation}</span></p>
-    <p style="color:#6a1b9a;"><strong>${experienceIcon}Experience:</strong> ${d.experience} years</p>
-    <p style="color: ${d.isActive ? '#4caf50' : '#f44336'}; font-weight: bold;">
-      ${d.isActive ? '✅ Service Active' : '❌ Service Inactive'}
-    </p>
-    <div style="margin-top:10px;">${contactHTML}</div>
-    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">${actionButtonsHTML}</div>
-    <p id="interest-count-${id}" style="color: #f44336; font-size: 1em; margin-top: 10px;">${interestCountText}</p>
-    <div style="margin-top:10px;">
-      <h4 style="color:#4CAF50;">📢 Customer Reviews</h4>
-      <div id="marketReviews-${id}" style="margin-top:10px;font-size:14px;"></div>
-      <div style="margin-top:10px;">
-        <button onclick="openAllReviewsModal('${id}')" style="background:#03a9f4;color:#fff;border:none;border-radius:5px;padding:6px 12px;">💬 View All Reviews</button>
+
+
+    const card = document.createElement("div");
+    card.className = "service-card";
+    card.id = `service-${id}`;
+    card.dataset.county = d.county;
+    card.dataset.occupation = occupation;
+    card.style.cssText = `
+      position: relative;
+      border: 2px solid ${isBoosted ? 'orange' : '#ddd'};
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      box-shadow: ${isBoosted ? '0 0 12px rgba(255,165,0,0.5)' : '0 2px 6px rgba(0,0,0,0.08)'};
+      background: #fff;
+      text-align: center;
+      transition: all 0.3s ease;
+    `;
+
+    card.innerHTML = `
+      ${iconHTML}
+      <div style="padding: 14px; text-align:left;">
+        ${verifiedBadge}
+        <h3 style="margin: 6px 0; color:#00796b;">${d.name} ${boostBadge}</h3>
+        ${imageHTML}
+        <p style="color:#3f51b5;"><strong>${locationIcon}County:</strong> ${d.county}</p>
+        <p style="color:#d32f2f;"><strong>Occupation:</strong> <span class="highlight-occupation">${d.occupation}</span></p>
+        <p style="color:#6a1b9a;"><strong>${experienceIcon}Experience:</strong> ${d.experience} years</p>
+        <p style="color: ${d.isActive ? '#4caf50' : '#f44336'}; font-weight: bold;">
+          ${d.isActive ? '✅ Service Active' : '❌ Service Inactive'}
+        </p>
+        <div style="margin-top:10px;">${contactHTML}</div>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">${actionButtonsHTML}</div>
+        <p id="interest-count-${id}" style="color: #f44336; font-size: 1em; margin-top: 10px;">${interestCountText}</p>
+        <div style="margin-top:10px;">
+          <h4 style="color:#4CAF50;">📢 Customer Reviews</h4>
+          <div id="marketReviews-${id}" style="margin-top:10px;font-size:14px;"></div>
+          <div style="margin-top:10px;">
+            <button onclick="openAllReviewsModal('${id}')" style="background:#03a9f4;color:#fff;border:none;border-radius:5px;padding:6px 12px;">💬 View All Reviews</button>
+          </div>
+        </div>
+        <div id="star-rating-${id}" class="star-rating" style="margin-top:12px;">
+          <span data-value="1" class="star">&#9734;</span>
+          <span data-value="2" class="star">&#9734;</span>
+          <span data-value="3" class="star">&#9734;</span>
+          <span data-value="4" class="star">&#9734;</span>
+          <span data-value="5" class="star">&#9734;</span>
+          <span id="average-rating-${id}" style="margin-left:10px; color:#ffb400; font-weight:bold;"></span>
+        </div>
       </div>
-    </div>
-    <div id="star-rating-${id}" class="star-rating" style="margin-top:12px;">
-      <span data-value="1" class="star">&#9734;</span>
-      <span data-value="2" class="star">&#9734;</span>
-      <span data-value="3" class="star">&#9734;</span>
-      <span data-value="4" class="star">&#9734;</span>
-      <span data-value="5" class="star">&#9734;</span>
-      <span id="average-rating-${id}" style="margin-left:10px; color:#ffb400; font-weight:bold;"></span>
-    </div>
-  </div>
-`;
+    `;
 
-container.appendChild(card);
+    container.appendChild(card);
 
-if (isBoosted && trendingContainer) {
-  const clonedCard = card.cloneNode(true);
-  clonedCard.id = `trending-service-${id}`;
-  const interestCountElem = clonedCard.querySelector(`#interest-count-${id}`);
-  if (interestCountElem) interestCountElem.id = `interest-count-trending-${id}`;
-  trendingContainer.appendChild(clonedCard);
+    if (isBoosted && trendingContainer) {
+      const clonedCard = card.cloneNode(true);
+      clonedCard.id = `trending-service-${id}`;
+      const interestCountElem = clonedCard.querySelector(`#interest-count-${id}`);
+      if (interestCountElem) interestCountElem.id = `interest-count-trending-${id}`;
+      trendingContainer.appendChild(clonedCard);
+    }
+
+    setupStarRating(id);
+    updateAverageRating(id);
+  }
 }
 
-setupStarRating(id);
-updateAverageRating(id);
-
-
-}
-}
 
 
 
@@ -7282,6 +7225,22 @@ async function postService() {
       return;
     }
 
+    // ✅ Handle photo upload (optional)
+    let photoURLs = [];
+    const photoInput = document.getElementById("svcPhotos");
+    if (photoInput.files.length > 0) {
+      // Upload photos to Firebase Storage
+      const uploadPromises = Array.from(photoInput.files).map(async (file) => {
+        const storageRef = firebase.storage().ref();
+        const photoRef = storageRef.child(`services/${currentUser.uid}/${Date.now()}_${file.name}`);
+        await photoRef.put(file);
+        const photoURL = await photoRef.getDownloadURL();
+        return photoURL;
+      });
+      
+      photoURLs = await Promise.all(uploadPromises);
+    }
+
     // ✅ Post service to Firestore
     const serviceRef = await servicesRef.add({
       name,
@@ -7292,7 +7251,8 @@ async function postService() {
       postedBy: currentUser.uid,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       boosted: false,
-      boostExpiry: null
+      boostExpiry: null,
+      photoURLs: photoURLs // Store the uploaded photo URLs
     });
 
     showCustomAlert("Service posted successfully!", "success");
